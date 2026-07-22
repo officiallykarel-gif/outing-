@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Your Special Code — from Michael</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+  :root{
+    --paper: #fbf3e7;
+    --paper-edge: #ecdcc3;
+    --ink: #3a2a2f;
+    --maroon: #7a2331;
+    --rose: #c1495a;
+    --gold: #b8863f;
+    --shadow: rgba(58, 42, 47, 0.18);
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(193,73,90,0.10), transparent 45%),
+      radial-gradient(circle at 80% 80%, rgba(184,134,63,0.12), transparent 45%),
+      var(--paper);
+    font-family: 'Spectral', serif;
+    color: var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 32px 16px;
+  }
+
+  .note{
+    position:relative;
+    width:100%;
+    max-width: 560px;
+    background: var(--paper);
+    border: 1px solid var(--paper-edge);
+    box-shadow: 0 18px 40px var(--shadow), 0 2px 0 var(--paper-edge);
+    padding: 44px 40px 36px;
+    border-radius: 3px;
+  }
+  .note::before{
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0; height:6px;
+    background: repeating-linear-gradient(135deg, var(--rose) 0 10px, var(--gold) 10px 20px);
+    border-radius: 3px 3px 0 0;
+  }
+
+  .eyebrow{
+    font-family:'Caveat', cursive;
+    color: var(--rose);
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+    margin: 4px 0 0;
+  }
+  h1{
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size: 2.6rem;
+    color: var(--maroon);
+    margin: 0 0 6px;
+    line-height: 1.05;
+  }
+  .sub{
+    font-size: 0.95rem;
+    color: #6b5459;
+    margin: 0 0 26px;
+    font-style: italic;
+  }
+
+  .step{ display:none; }
+  .step.active{ display:block; animation: fade .35s ease; }
+  @keyframes fade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+
+  .prompt{
+    font-size: 1.08rem;
+    line-height: 1.55;
+    margin: 0 0 18px;
+  }
+  .prompt b{ color: var(--maroon); }
+
+  input[type="text"], input[type="number"], select{
+    width:100%;
+    font-family:'Spectral', serif;
+    font-size: 1.05rem;
+    padding: 10px 12px;
+    border: none;
+    border-bottom: 2px solid var(--paper-edge);
+    background: transparent;
+    color: var(--ink);
+    outline:none;
+    margin-bottom: 6px;
+  }
+  input:focus, select:focus{ border-bottom-color: var(--rose); }
+
+  .choices{ display:flex; gap:12px; margin: 6px 0 4px; flex-wrap: wrap; }
+  .choice-btn{
+    font-family:'Spectral', serif;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: 1.5px solid var(--maroon);
+    background: transparent;
+    color: var(--maroon);
+    border-radius: 999px;
+    cursor:pointer;
+    transition: all .15s ease;
+  }
+  .choice-btn:hover{ background: var(--maroon); color: var(--paper); }
+
+  .row{ display:flex; gap:16px; }
+  .row > div{ flex:1; }
+  label.field-label{
+    display:block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .next-btn, .primary-btn{
+    margin-top: 18px;
+    font-family:'Spectral', serif;
+    font-weight:600;
+    font-size: 0.95rem;
+    padding: 11px 24px;
+    background: var(--maroon);
+    color: var(--paper);
+    border:none;
+    border-radius: 4px;
+    cursor:pointer;
+    letter-spacing: 0.3px;
+  }
+  .next-btn:hover, .primary-btn:hover{ background: var(--rose); }
+
+  .nudge{
+    font-family:'Caveat', cursive;
+    color: var(--rose);
+    font-size: 1.15rem;
+    margin-top: 10px;
+    min-height: 1.4em;
+  }
+
+  .summary-card{
+    border: 1.5px dashed var(--gold);
+    border-radius: 6px;
+    padding: 22px 20px;
+    margin-top: 6px;
+  }
+  .summary-card dt{
+    font-size: 0.72rem;
+    text-transform:uppercase;
+    letter-spacing: 1px;
+    color: var(--gold);
+    margin-top: 12px;
+  }
+  .summary-card dt:first-child{ margin-top:0; }
+  .summary-card dd{
+    margin: 2px 0 0;
+    font-size: 1.15rem;
+    color: var(--maroon);
+    font-family:'Caveat', cursive;
+    font-weight: 700;
+  }
+
+  .seal{
+    font-family:'Caveat', cursive;
+    text-align:center;
+    color: var(--rose);
+    font-size: 1.4rem;
+    margin-top: 24px;
+  }
+
+  .progress-dots{
+    display:flex; gap:6px; margin-bottom: 22px;
+  }
+  .progress-dots span{
+    width:7px; height:7px; border-radius:50%;
+    background: var(--paper-edge);
+  }
+  .progress-dots span.done{ background: var(--rose); }
+
+  @media (prefers-reduced-motion: reduce){
+    .step.active{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="note">
+  <p class="eyebrow">a special code, handwritten by Michael</p>
+  <h1>Your Special Code</h1>
+  <p class="sub">Excuse all spelling errors — it was written in 30 minutes. Answer everything honestly; every answer comes straight to me.</p>
+
+  <div class="progress-dots" id="dots"></div>
+
+  <!-- Step 0: intro -->
+  <div class="step active" data-step="0">
+    <p class="prompt">Follow the instructions, answer every question, and don't overthink it. Ready?</p>
+    <button class="next-btn" onclick="goTo(1)">Begin →</button>
+  </div>
+
+  <!-- Step 1: name -->
+  <div class="step" data-step="1">
+    <p class="prompt">Enter your name:</p>
+    <input type="text" id="userName" placeholder="Your name" autocomplete="off">
+    <button class="next-btn" onclick="submitName()">Next →</button>
+    <div class="nudge" id="nameNudge"></div>
+  </div>
+
+  <!-- Step 2: boyfriend name -->
+  <div class="step" data-step="2">
+    <p class="prompt">What is the name of your boyfriend?</p>
+    <input type="text" id="bfName" placeholder="His name" autocomplete="off">
+    <button class="next-btn" onclick="submitBF()">Next →</button>
+    <div class="nudge" id="bfNudge"></div>
+  </div>
+
+  <!-- Step 3: movie yes/no -->
+  <div class="step" data-step="3">
+    <p class="prompt">He wanted to know whether you'd go to the movies with him — to see <b>Spiderman</b>. <i>Not on the premiere day.</i> Would you still want to go?</p>
+    <div class="choices">
+      <button class="choice-btn" onclick="submitChoice('Yes')">Yes</button>
+      <button class="choice-btn" onclick="submitChoice('Noo')">Noo</button>
+    </div>
+    <div class="nudge" id="choiceNudge"></div>
+  </div>
+
+  <!-- Step 4: date/time -->
+  <div class="step" data-step="4">
+    <p class="prompt">Quite unfortunately he won't be able to go on the premiere day. So — which day would you be free, and what time?</p>
+    <div class="row">
+      <div>
+        <label class="field-label">Date in August, 2026</label>
+        <input type="number" id="dateInput" min="1" max="31" placeholder="e.g. 14">
+      </div>
+      <div>
+        <label class="field-label">Hour</label>
+        <input type="number" id="timeInput" min="1" max="12" placeholder="e.g. 6">
+      </div>
+    </div>
+    <button class="next-btn" onclick="submitDateTime()">Next →</button>
+    <div class="nudge" id="dtNudge"></div>
+  </div>
+
+  <!-- Step 5: summary -->
+  <div class="step" data-step="5">
+    <p class="prompt">Since you've answered everything, the programmer must — <b>a must</b> — receive an answer. Thank you.</p>
+    <div class="summary-card">
+      <dl>
+        <dt>Name</dt><dd id="s_name"></dd>
+        <dt>Boyfriend</dt><dd id="s_bf"></dd>
+        <dt>Your choice</dt><dd id="s_choice"></dd>
+        <dt>Date &amp; time</dt><dd id="s_dt"></dd>
+      </dl>
+    </div>
+    <p class="seal">— thank you for your input —</p>
+  </div>
+
+</div>
+
+<script>
+  const total = 6;
+  const answers = {};
+
+  function renderDots(active){
+    const dots = document.getElementById('dots');
+    dots.innerHTML = '';
+    for(let i=0;i<total;i++){
+      const s = document.createElement('span');
+      if(i <= active) s.classList.add('done');
+      dots.appendChild(s);
+    }
+  }
+
+  function goTo(step){
+    document.querySelectorAll('.step').forEach(el=>el.classList.remove('active'));
+    document.querySelector('.step[data-step="'+step+'"]').classList.add('active');
+    renderDots(step);
+  }
+  renderDots(0);
+
+  function startsWithCapital(str){
+    return /^[A-Z]/.test(str);
+  }
+
+  function submitName(){
+    const val = document.getElementById('userName').value.trim();
+    const nudge = document.getElementById('nameNudge');
+    if(!val){
+      nudge.textContent = "don't be shy, write it in :)";
+      return;
+    }
+    if(!startsWithCapital(val)){
+      nudge.textContent = "names should start with a capital letter — try again";
+      return;
+    }
+    nudge.textContent = "";
+    answers.name = val;
+    goTo(2);
+  }
+
+  function submitBF(){
+    const val = document.getElementById('bfName').value.trim();
+    const nudge = document.getElementById('bfNudge');
+    if(!val){ nudge.textContent = "he's waiting..."; return; }
+    if(!startsWithCapital(val)){
+      nudge.textContent = "names should start with a capital letter — try again";
+      return;
+    }
+    const valLower = val.toLowerCase();
+    if(valLower === 'michael karel' || valLower === 'michael'){
+      nudge.textContent = "";
+      answers.bf = val;
+      goTo(3);
+    } else {
+      nudge.textContent = "wowww, he is so speechless. you sure?";
+      document.getElementById('bfName').value = '';
+    }
+  }
+
+  function submitChoice(choice){
+    const nudge = document.getElementById('choiceNudge');
+    if(choice === 'Noo'){
+      nudge.textContent = "I am not leaving yet without a Yes.";
+      return;
+    }
+    nudge.textContent = "";
+    answers.choice = choice;
+    goTo(4);
+  }
+
+  function submitDateTime(){
+    const d = document.getElementById('dateInput').value;
+    const t = document.getElementById('timeInput').value;
+    const nudge = document.getElementById('dtNudge');
+    if(!d || !t){ nudge.textContent = "need both a date and an hour"; return; }
+    answers.date = d;
+    answers.time = t;
+
+    document.getElementById('s_name').textContent = answers.name;
+    document.getElementById('s_bf').textContent = answers.bf;
+    document.getElementById('s_choice').textContent = answers.choice;
+    document.getElementById('s_dt').textContent = answers.date + ' August 2026, ' + answers.time + ':00';
+
+    goTo(5);
+  }
+</script>
+
+</body>
+</html>
